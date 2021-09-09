@@ -7,8 +7,17 @@ public class RepairRequest {
     private String title;
     private String description;
     private String status;
+    private double price;
     private long userId;
     private LocalDateTime time;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public LocalDateTime getTime() {
         return time;

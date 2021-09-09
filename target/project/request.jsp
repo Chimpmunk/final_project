@@ -7,7 +7,7 @@
 <body>
 <form action="/request" method="post">
     <input type="text" name="title">
-    <input type="text" name="description">
+    <textarea maxlength="200" name="description"></textarea>
     <input type="submit" value="send request">
 </form>
 </body>
