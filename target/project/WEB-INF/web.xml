@@ -4,6 +4,90 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
 
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/login</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/registration</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>customerFilter</filter-name>
+        <filter-class>filter.CustomerFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>customerFilter</filter-name>
+        <url-pattern>/request</url-pattern>
+    </filter-mapping>
 
+    <filter>
+        <filter-name>profileFilter</filter-name>
+        <filter-class>filter.ProfileFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>profileFilter</filter-name>
+        <url-pattern>/profile</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>profileFilter</filter-name>
+        <url-pattern>/request-list</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>managerFilter</filter-name>
+        <filter-class>filter.ManagerFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>managerFilter</filter-name>
+        <url-pattern>/add-repairman.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>managerFilter</filter-name>
+        <url-pattern>/add-repairman</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>managerFilter</filter-name>
+        <url-pattern>/assign</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>managerFilter</filter-name>
+        <url-pattern>/pay</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>managerFilter</filter-name>
+        <url-pattern>/refill</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>managerFilter</filter-name>
+        <url-pattern>/set-price</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>repairmanFilter</filter-name>
+        <filter-class>filter.RepairmanFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>repairmanFilter</filter-name>
+        <url-pattern>/done</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>repairmanFilter</filter-name>
+        <url-pattern>/in-progress</url-pattern>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>listener.AppContextListener</listener-class>
+    </listener>
+    
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    
 
 </web-app>

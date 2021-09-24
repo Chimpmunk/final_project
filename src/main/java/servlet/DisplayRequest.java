@@ -17,19 +17,26 @@ public class DisplayRequest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("request_id");
-        if(id!=null){
+        if (id != null) {
             long requestId = Long.parseLong(id);
-            try{
+            try {
                 RepairRequest repairRequest = DBManager.getInstance().getRequestById(requestId);
                 User author = DBManager.getInstance().getUserById(repairRequest.getUserId());
-                req.setAttribute("req",repairRequest);
-                req.setAttribute("requestAuthor",author);
+                req.setAttribute("req", repairRequest);
+                req.setAttribute("requestAuthor", author);
 
-                if (repairRequest.getStatus().equals("paid")){
+                if (repairRequest.getStatus().equals("paid")) {
                     req.setAttribute("repairmanList", DBManager.getInstance().getRepairmanList());
                 }
-                req.getRequestDispatcher("/view-request.jsp").forward(req,resp);
-            } catch (DBException e){
+                if (repairRequest.getStatus().equals("assigned") || repairRequest.getStatus().equals("in_progress") ||
+                        repairRequest.getStatus().equals("done")) {
+                    req.setAttribute("repairman", DBManager.getInstance().getRepairmanByRequest(repairRequest.getId()));
+                }
+                if (repairRequest.getStatus().equals("done")) {
+                    req.setAttribute("review", DBManager.getInstance().getReview(requestId));
+                }
+                req.getRequestDispatcher("/view-request.jsp").forward(req, resp);
+            } catch (DBException e) {
                 //todo log and redirect
             }
         } else {

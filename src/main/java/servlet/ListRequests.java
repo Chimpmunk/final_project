@@ -1,6 +1,7 @@
 package servlet;
 
 import database.DBManager;
+import database.SqlConstants;
 import database.exception.DBException;
 import entity.RepairRequest;
 import entity.User;
@@ -12,10 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @WebServlet("/request-list")
 public class ListRequests extends HttpServlet {
@@ -26,7 +24,47 @@ public class ListRequests extends HttpServlet {
         if (user != null) {
             if (user.getRole().equals("manager")) {
                 try {
-                    req.setAttribute("requests", requestFiltering(req));
+                    String repairmanStr = req.getParameter("repairman");
+                    String[] repairmanStrArr = null;
+                    long[] repairmanArr = null;
+                    if (repairmanStr!=null){
+                        repairmanStrArr = req.getParameterValues("repairman");
+                        repairmanArr = new long[repairmanStrArr.length];
+                        for (int i=0;i<repairmanArr.length;i++){
+                            repairmanArr[i] = Long.parseLong(repairmanStrArr[i]);
+                        }
+                    }
+                    String statusStr = req.getParameter("status");
+                    String[] statusArr = null;
+                    if (statusStr!=null){
+                        statusArr = req.getParameterValues("status");
+                    }
+                    String sortStr = req.getParameter("sort");
+                    String pageStr = req.getParameter("page");
+
+                    int offset = 0;
+                    if(pageStr!=null){
+                        offset = 20 * (Integer.parseInt(pageStr)-1);
+                        req.setAttribute("currentPage", "page="+pageStr);
+                    } else{
+                        req.setAttribute("currentPage", "page=1");
+                    }
+                    String sql = prepareSql(req);
+                    String[] sqlArr = sql.split("limit");
+                    int requestCount = DBManager.getInstance().countFilteredRequests(sqlArr[0],repairmanArr,statusArr);
+                    if(requestCount==-1){
+                        //todo redirect to err
+                    }
+                    int pageCount = 1+ requestCount/20;
+                    int[] pages = new int[pageCount];
+                    for (int i = 0;i<pageCount;i++){
+                        pages[i]=i+1;
+                    }
+                    List<RepairRequest> list = DBManager.getInstance()
+                            .getRequestsFilteredSorted(sql,repairmanArr,statusArr,offset);
+                    req.setAttribute("repairmanList",DBManager.getInstance().getRepairmanList());
+                    req.setAttribute("pages",pages);
+                    req.setAttribute("requests", list);
                 } catch (DBException e) {
                     //todo log and redirect
                 }
@@ -49,34 +87,48 @@ public class ListRequests extends HttpServlet {
         }
     }
 
-    private Collection<RepairRequest> requestFiltering(HttpServletRequest req) throws DBException {
+
+    private String prepareSql(HttpServletRequest req) {
         String repairmanStr = req.getParameter("repairman");
+        String[] repairmanArr = null;
         String statusStr = req.getParameter("status");
-        List<RepairRequest> requests = null;
-        List<RepairRequest> res = new ArrayList<>();
+        String[] statusArr = null;
+        String sortStr = req.getParameter("sort");
+        StringBuilder sql = new StringBuilder();
+        sql.append(SqlConstants.FIND_REQUESTS_SORTED_AND_FILTERED);
         if (repairmanStr != null) {
-            String[] strArr = repairmanStr.split(",");
-            long[] idArr = new long[strArr.length];
-            for (int i = 0; i < idArr.length; i++) {
-                idArr[i] = Long.parseLong(strArr[i]);
+            repairmanArr = req.getParameterValues("repairman");
+            sql.append(SqlConstants.FROM_RR);
+            sql.append(SqlConstants.FROM_RA);
+            sql.append(SqlConstants.WHERE);
+            sql.append(SqlConstants.REPAIRMAN);
+            for(int i=0;i<repairmanArr.length-1;i++){
+                sql.append(SqlConstants.ADD_REPAIRMAN);
             }
-            requests = DBManager.getInstance().getRequestsByMoreTanOneRepairman(idArr);
+            sql.append(SqlConstants.CLOSE_BRACKETS);
         } else {
-            requests = DBManager.getInstance().findAllRequests();
+            sql.append(SqlConstants.FROM_RR);
         }
-        if (statusStr != null) {
-            String[] statuses = statusStr.split(",");
-            requests.stream().filter(s -> {
-                for (String str : statuses) {
-                    if (str.equals(s.getStatus())) {
-                        return true;
-                    }
-                }
-                return false;
-            }).collect(Collectors.toCollection(()->res));
-            return res;
-        } else {
-            return requests;
+        if(statusStr!=null){
+            statusArr = req.getParameterValues("status");
+            if(repairmanArr!= null){
+                sql.append(SqlConstants.AND);
+            } else {
+                sql.append(SqlConstants.WHERE);
+            }
+            sql.append(SqlConstants.STATUS);
+            for(int i=0;i<statusArr.length-1;i++){
+                sql.append(SqlConstants.ADD_STATUS);
+            }
+            sql.append(SqlConstants.CLOSE_BRACKETS);
         }
+        if(repairmanArr!=null){
+            sql.append(SqlConstants.IF_REPAIRMAN);
+        }
+        if(sortStr!=null){
+            sql.append(String.format(SqlConstants.ORDER,sortStr));
+        }
+        sql.append(SqlConstants.LIMIT);
+        return sql.toString();
     }
 }

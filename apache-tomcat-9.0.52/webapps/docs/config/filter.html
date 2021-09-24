@@ -38,7 +38,7 @@
   <div class="subsection"><h4 id="Add_Default_Character_Set_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the Add Default Character Set Filter is
-    <strong><code>org.apache.catalina.filters.AddDefaultCharsetFilter</code>
+    <strong><code>org.apache.catalina.filter.AddDefaultCharsetFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -76,7 +76,7 @@
     <p>The minimal configuration required to use this filter is:</p>
     <div class="codeBox"><pre><code>&lt;filter&gt;
   &lt;filter-name&gt;CorsFilter&lt;/filter-name&gt;
-  &lt;filter-class&gt;org.apache.catalina.filters.CorsFilter&lt;/filter-class&gt;
+  &lt;filter-class&gt;org.apache.catalina.filter.CorsFilter&lt;/filter-class&gt;
 &lt;/filter&gt;
 &lt;filter-mapping&gt;
   &lt;filter-name&gt;CorsFilter&lt;/filter-name&gt;
@@ -94,7 +94,7 @@
   </div></div>
   <div class="subsection"><h4 id="CORS_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
     <p>The filter class name for the CORS Filter is
-    <strong><code>org.apache.catalina.filters.CorsFilter</code></strong>.</p>
+    <strong><code>org.apache.catalina.filter.CorsFilter</code></strong>.</p>
   </div></div>
   <div class="subsection"><h4 id="CORS_Filter/Initialisation_parameters">Initialisation parameters</h4><div class="text">
     <p>The CORS Filter supports following initialisation parameters:</p>
@@ -154,7 +154,7 @@
     defaults:</p>
     <div class="codeBox"><pre><code>&lt;filter&gt;
   &lt;filter-name&gt;CorsFilter&lt;/filter-name&gt;
-  &lt;filter-class&gt;org.apache.catalina.filters.CorsFilter&lt;/filter-class&gt;
+  &lt;filter-class&gt;org.apache.catalina.filter.CorsFilter&lt;/filter-class&gt;
   &lt;init-param&gt;
     &lt;param-name&gt;cors.allowed.origins&lt;/param-name&gt;
     &lt;param-value&gt;https://www.apache.org&lt;/param-value&gt;
@@ -234,7 +234,7 @@
   <div class="subsection"><h4 id="CSRF_Prevention_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the CSRF Prevention Filter is
-    <strong><code>org.apache.catalina.filters.CsrfPreventionFilter</code>
+    <strong><code>org.apache.catalina.filter.CsrfPreventionFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -307,7 +307,7 @@
     </ul>
       <div class="codeBox"><pre><code>&lt;filter&gt;
   &lt;filter-name&gt;RestCSRF&lt;/filter-name&gt;
-  &lt;filter-class&gt;org.apache.catalina.filters.RestCsrfPreventionFilter&lt;/filter-class&gt;
+  &lt;filter-class&gt;org.apache.catalina.filter.RestCsrfPreventionFilter&lt;/filter-class&gt;
 &lt;/filter&gt;
 &lt;filter-mapping&gt;
   &lt;filter-name&gt;RestCSRF&lt;/filter-name&gt;
@@ -371,7 +371,7 @@ HTTP/1.1 200 OK
 
     <div class="codeBox"><pre><code>&lt;filter&gt;
   &lt;filter-name&gt;RestCSRF&lt;/filter-name&gt;
-  &lt;filter-class&gt;org.apache.catalina.filters.RestCsrfPreventionFilter&lt;/filter-class&gt;
+  &lt;filter-class&gt;org.apache.catalina.filter.RestCsrfPreventionFilter&lt;/filter-class&gt;
   &lt;init-param&gt;
     &lt;param-name&gt;pathsAcceptingParams&lt;/param-name&gt;
     &lt;param-value&gt;/resources/removeResource,/resources/addResource&lt;/param-value&gt;
@@ -387,7 +387,7 @@ HTTP/1.1 200 OK
   <div class="subsection"><h4 id="CSRF_Prevention_Filter_for_REST_APIs/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the CSRF Prevention Filter for REST APIs is
-    <strong><code>org.apache.catalina.filters.RestCsrfPreventionFilter</code>
+    <strong><code>org.apache.catalina.filter.RestCsrfPreventionFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -457,7 +457,7 @@ HTTP/1.1 200 OK
 
     <div class="codeBox"><pre><code>&lt;filter&gt;
  &lt;filter-name&gt;ExpiresFilter&lt;/filter-name&gt;
- &lt;filter-class&gt;org.apache.catalina.filters.ExpiresFilter&lt;/filter-class&gt;
+ &lt;filter-class&gt;org.apache.catalina.filter.ExpiresFilter&lt;/filter-class&gt;
  &lt;init-param&gt;
     &lt;param-name&gt;ExpiresByType image&lt;/param-name&gt;
     &lt;param-value&gt;access plus 10 minutes&lt;/param-value&gt;
@@ -608,7 +608,7 @@ The expiry time can be fine-tuned by adding several
   <div class="subsection"><h4 id="Expires_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the Expires Filter is
-    <strong><code>org.apache.catalina.filters.ExpiresFilter</code>
+    <strong><code>org.apache.catalina.filter.ExpiresFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -719,18 +719,18 @@ The expiry time can be fine-tuned by adding several
   <div class="subsection"><h4 id="Troubleshooting">Troubleshooting</h4><div class="text">
     <p>
     To troubleshoot, enable logging on the
-    <code>org.apache.catalina.filters.ExpiresFilter</code>.
+    <code>org.apache.catalina.filter.ExpiresFilter</code>.
     </p>
     <p>
     Extract of logging.properties
     </p>
 
-    <div class="codeBox"><pre><code>org.apache.catalina.filters.ExpiresFilter.level = FINE    </code></pre></div>
+    <div class="codeBox"><pre><code>org.apache.catalina.filter.ExpiresFilter.level = FINE    </code></pre></div>
     <p>
     Sample of initialization log message:
     </p>
 
-    <div class="codeBox"><pre><code>Mar 26, 2010 2:01:41 PM org.apache.catalina.filters.ExpiresFilter init
+    <div class="codeBox"><pre><code>Mar 26, 2010 2:01:41 PM org.apache.catalina.filter.ExpiresFilter init
 FINE: Filter initialized with configuration ExpiresFilter[
  excludedResponseStatusCode=[304],
  default=null,
@@ -744,7 +744,7 @@ FINE: Filter initialized with configuration ExpiresFilter[
     for better readability.
     </p>
 
-    <div class="codeBox"><pre><code>Mar 26, 2010 2:09:47 PM org.apache.catalina.filters.ExpiresFilter onBeforeWriteResponseBody
+    <div class="codeBox"><pre><code>Mar 26, 2010 2:09:47 PM org.apache.catalina.filter.ExpiresFilter onBeforeWriteResponseBody
 FINE: Request "/tomcat.gif" with response status "200"
  content-type "image/gif", set expiration date 3/26/10 2:19 PM</code></pre></div>
     <p>
@@ -752,7 +752,7 @@ FINE: Request "/tomcat.gif" with response status "200"
     an expiration date:
     </p>
 
-    <div class="codeBox"><pre><code>Mar 26, 2010 2:10:27 PM org.apache.catalina.filters.ExpiresFilter onBeforeWriteResponseBody
+    <div class="codeBox"><pre><code>Mar 26, 2010 2:10:27 PM org.apache.catalina.filter.ExpiresFilter onBeforeWriteResponseBody
 FINE: Request "/docs/config/manager.html" with response status "200"
  content-type "text/html", no expiration configured</code></pre></div>
   </div></div>
@@ -787,7 +787,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
   <div class="subsection"><h4 id="Failed_Request_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the Failed Request Filter is
-    <strong><code>org.apache.catalina.filters.FailedRequestFilter</code>
+    <strong><code>org.apache.catalina.filter.FailedRequestFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -812,7 +812,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
   <div class="subsection"><h4 id="HTTP_Header_Security_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the HTTP Header Security Filter is
-    <strong><code>org.apache.catalina.filters.HttpHeaderSecurityFilter</code>
+    <strong><code>org.apache.catalina.filter.HttpHeaderSecurityFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -903,7 +903,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
   <div class="subsection"><h4 id="Remote_Address_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the Remote Address Filter is
-    <strong><code>org.apache.catalina.filters.RemoteAddrFilter</code>
+    <strong><code>org.apache.catalina.filter.RemoteAddrFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -942,7 +942,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
     <p>To allow access only for the clients connecting from localhost:</p>
 <div class="codeBox"><pre><code>    &lt;filter&gt;
       &lt;filter-name&gt;Remote Address Filter&lt;/filter-name&gt;
-      &lt;filter-class&gt;org.apache.catalina.filters.RemoteAddrFilter&lt;/filter-class&gt;
+      &lt;filter-class&gt;org.apache.catalina.filter.RemoteAddrFilter&lt;/filter-class&gt;
       &lt;init-param&gt;
         &lt;param-name&gt;allow&lt;/param-name&gt;
         &lt;param-value&gt;127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1&lt;/param-value&gt;
@@ -980,7 +980,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
   <div class="subsection"><h4 id="Remote_Host_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the Remote Address Filter is
-    <strong><code>org.apache.catalina.filters.RemoteHostFilter</code>
+    <strong><code>org.apache.catalina.filter.RemoteHostFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -1062,7 +1062,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
   <div class="subsection"><h4 id="Remote_CIDR_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the Remote Address Filter is
-      <strong><code>org.apache.catalina.filters.RemoteCIDRFilter</code>
+      <strong><code>org.apache.catalina.filter.RemoteCIDRFilter</code>
       </strong>.</p>
 
   </div></div>
@@ -1101,7 +1101,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
     <pre>
       &lt;filter&gt;
       &lt;filter-name&gt;Remote CIDR Filter&lt;/filter-name&gt;
-      &lt;filter-class&gt;org.apache.catalina.filters.RemoteCIDRFilter&lt;/filter-class&gt;
+      &lt;filter-class&gt;org.apache.catalina.filter.RemoteCIDRFilter&lt;/filter-class&gt;
       &lt;init-param&gt;
       &lt;param-name&gt;allow&lt;/param-name&gt;
       &lt;param-value&gt;127.0.0.0/8, ::1&lt;/param-value&gt;
@@ -1130,8 +1130,8 @@ FINE: Request "/docs/config/manager.html" with response status "200"
     (e.g. "X-Forwarded-Proto").</p>
 
     <p>If used in conjunction with Remote Address/Host filters then this filter
-    should be defined first to ensure that the correct client IP address is
-    presented to the Remote Address/Host filters.</p>
+        should be defined first to ensure that the correct client IP address is
+        presented to the Remote Address/Host filter.</p>
 
     <p><strong>Note:</strong> By default this filter has no effect on the
     values that are written into access log. The original values are restored
@@ -1160,7 +1160,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
   <div class="subsection"><h4 id="Remote_IP_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the Remote IP Filter is
-    <strong><code>org.apache.catalina.filters.RemoteIpFilter</code>
+    <strong><code>org.apache.catalina.filter.RemoteIpFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -1171,7 +1171,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
     </p>
     <div class="codeBox"><pre><code>      &lt;filter&gt;
         &lt;filter-name&gt;RemoteIpFilter&lt;/filter-name&gt;
-        &lt;filter-class&gt;org.apache.catalina.filters.RemoteIpFilter&lt;/filter-class&gt;
+        &lt;filter-class&gt;org.apache.catalina.filter.RemoteIpFilter&lt;/filter-class&gt;
       &lt;/filter&gt;
 
       &lt;filter-mapping&gt;
@@ -1190,7 +1190,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
     <code>https</code> (case insensitive). </p>
     <div class="codeBox"><pre><code>      &lt;filter&gt;
         &lt;filter-name&gt;RemoteIpFilter&lt;/filter-name&gt;
-        &lt;filter-class&gt;org.apache.catalina.filters.RemoteIpFilter&lt;/filter-class&gt;
+        &lt;filter-class&gt;org.apache.catalina.filter.RemoteIpFilter&lt;/filter-class&gt;
         &lt;init-param&gt;
           &lt;param-name&gt;protocolHeader&lt;/param-name&gt;
           &lt;param-value&gt;x-forwarded-proto&lt;/param-value&gt;
@@ -1208,7 +1208,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
     <p>RemoteIpFilter configuration: </p>
     <div class="codeBox"><pre><code>     &lt;filter&gt;
        &lt;filter-name&gt;RemoteIpFilter&lt;/filter-name&gt;
-       &lt;filter-class&gt;org.apache.catalina.filters.RemoteIpFilter&lt;/filter-class&gt;
+       &lt;filter-class&gt;org.apache.catalina.filter.RemoteIpFilter&lt;/filter-class&gt;
        &lt;init-param&gt;
          &lt;param-name&gt;allowedInternalProxies&lt;/param-name&gt;
          &lt;param-value&gt;192\.168\.0\.10|192\.168\.0\.11&lt;/param-value&gt;
@@ -1283,7 +1283,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
     <p>RemoteIpFilter configuration: </p>
     <div class="codeBox"><pre><code>     &lt;filter&gt;
        &lt;filter-name&gt;RemoteIpFilter&lt;/filter-name&gt;
-       &lt;filter-class&gt;org.apache.catalina.filters.RemoteIpFilter&lt;/filter-class&gt;
+       &lt;filter-class&gt;org.apache.catalina.filter.RemoteIpFilter&lt;/filter-class&gt;
        &lt;init-param&gt;
          &lt;param-name&gt;allowedInternalProxies&lt;/param-name&gt;
          &lt;param-value&gt;192\.168\.0\.10|192\.168\.0\.11&lt;/param-value&gt;
@@ -1337,7 +1337,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
     <p>RemoteIpFilter configuration: </p>
     <div class="codeBox"><pre><code>     &lt;filter&gt;
        &lt;filter-name&gt;RemoteIpFilter&lt;/filter-name&gt;
-       &lt;filter-class&gt;org.apache.catalina.filters.RemoteIpFilter&lt;/filter-class&gt;
+       &lt;filter-class&gt;org.apache.catalina.filter.RemoteIpFilter&lt;/filter-class&gt;
        &lt;init-param&gt;
          &lt;param-name&gt;allowedInternalProxies&lt;/param-name&gt;
          &lt;param-value&gt;192\.168\.0\.10|192\.168\.0\.11&lt;/param-value&gt;
@@ -1394,7 +1394,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
     <p>RemoteIpFilter configuration: </p>
     <div class="codeBox"><pre><code>     &lt;filter&gt;
        &lt;filter-name&gt;RemoteIpFilter&lt;/filter-name&gt;
-       &lt;filter-class&gt;org.apache.catalina.filters.RemoteIpFilter&lt;/filter-class&gt;
+       &lt;filter-class&gt;org.apache.catalina.filter.RemoteIpFilter&lt;/filter-class&gt;
        &lt;init-param&gt;
          &lt;param-name&gt;allowedInternalProxies&lt;/param-name&gt;
          &lt;param-value&gt;192\.168\.0\.10|192\.168\.0\.11&lt;/param-value&gt;
@@ -1552,7 +1552,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
   <div class="subsection"><h4 id="Request_Dumper_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the Request Dumper Filter is
-    <strong><code>org.apache.catalina.filters.RequestDumperFilter</code>
+    <strong><code>org.apache.catalina.filter.RequestDumperFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -1573,7 +1573,7 @@ FINE: Request "/docs/config/manager.html" with response status "200"
     <div class="codeBox"><pre><code>&lt;filter&gt;
     &lt;filter-name&gt;requestdumper&lt;/filter-name&gt;
     &lt;filter-class&gt;
-        org.apache.catalina.filters.RequestDumperFilter
+        org.apache.catalina.filter.RequestDumperFilter
     &lt;/filter-class&gt;
 &lt;/filter&gt;
 &lt;filter-mapping&gt;
@@ -1590,8 +1590,8 @@ FINE: Request "/docs/config/manager.html" with response status "200"
 1request-dumper.org.apache.juli.FileHandler.prefix = request-dumper.
 1request-dumper.org.apache.juli.FileHandler.encoding = UTF-8
 1request-dumper.org.apache.juli.FileHandler.formatter = org.apache.juli.VerbatimFormatter
-org.apache.catalina.filters.RequestDumperFilter.level = INFO
-org.apache.catalina.filters.RequestDumperFilter.handlers = \
+org.apache.catalina.filter.RequestDumperFilter.level = INFO
+org.apache.catalina.filter.RequestDumperFilter.handlers = \
   1request-dumper.org.apache.juli.FileHandler</code></pre></div>
   </div></div>
 </div><h3 id="Session_Initializer_Filter">Session Initializer Filter</h3><div class="text">
@@ -1612,7 +1612,7 @@ org.apache.catalina.filters.RequestDumperFilter.handlers = \
 
   <div class="subsection"><h4 id="Session_Initializer_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
     <p>The filter class name for the Session Initializer Filter is
-    <strong><code>org.apache.catalina.filters.SessionInitializerFilter</code></strong>.</p>
+    <strong><code>org.apache.catalina.filter.SessionInitializerFilter</code></strong>.</p>
   </div></div>
 
   <div class="subsection"><h4 id="Session_Initializer_Filter/Initialisation_parameters">Initialisation parameters</h4><div class="text">
@@ -1626,7 +1626,7 @@ org.apache.catalina.filters.RequestDumperFilter.handlers = \
 
     <div class="codeBox"><pre><code>&lt;filter&gt;
     &lt;filter-name&gt;SessionInitializer&lt;/filter-name&gt;
-    &lt;filter-class&gt;org.apache.catalina.filters.SessionInitializerFilter&lt;/filter-class&gt;
+    &lt;filter-class&gt;org.apache.catalina.filter.SessionInitializerFilter&lt;/filter-class&gt;
 &lt;/filter&gt;
 &lt;filter-mapping&gt;
     &lt;filter-name&gt;SessionInitializer&lt;/filter-name&gt;
@@ -1655,7 +1655,7 @@ org.apache.catalina.filters.RequestDumperFilter.handlers = \
   <div class="subsection"><h4 id="Set_Character_Encoding_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the Set Character Encoding Filter is
-    <strong><code>org.apache.catalina.filters.SetCharacterEncodingFilter</code>
+    <strong><code>org.apache.catalina.filter.SetCharacterEncodingFilter</code>
     </strong>.</p>
 
   </div></div>
@@ -1697,7 +1697,7 @@ org.apache.catalina.filters.RequestDumperFilter.handlers = \
   <div class="subsection"><h4 id="WebDAV_Fix_Filter/Filter_Class_Name">Filter Class Name</h4><div class="text">
 
     <p>The filter class name for the WebDAV Fix Filter is
-    <strong><code>org.apache.catalina.filters.WebdavFixFilter</code>
+    <strong><code>org.apache.catalina.filter.WebdavFixFilter</code>
     </strong>.</p>
 
   </div></div>

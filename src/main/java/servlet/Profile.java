@@ -22,6 +22,6 @@ public class Profile extends HttpServlet {
 
             request.getRequestDispatcher("profile.jsp").forward(request,response);
         }
-        response.sendRedirect("/login");
+
     }
 }

@@ -2,7 +2,9 @@ package database;
 
 import database.exception.DBException;
 import entity.RepairRequest;
+import entity.Review;
 import entity.User;
+import org.apache.log4j.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBManager {
+
+    private static final Logger logger = Logger.getLogger(DBManager.class);
 
     private static DBManager instance;
     private DataSource ds;
@@ -67,7 +71,7 @@ public class DBManager {
             con.commit();
 
         } catch (SQLException e) {
-            //TODO log
+            logger.error("Can not insert user", e);
             rollback(con);
             throw new DBException("Can not insert user", e);
         }
@@ -99,7 +103,7 @@ public class DBManager {
             prstmt.executeUpdate();
             con.commit();
         } catch (SQLException e) {
-            //TODO log
+            logger.error("Can not insert repair request", e);
             rollback(con);
             throw new DBException("Can not insert repair request", e);
         }
@@ -126,7 +130,7 @@ public class DBManager {
             }
             con.commit();
         } catch (SQLException e) {
-            //TODO log
+            logger.error("Can not find user", e);
             rollback(con);
             throw new DBException("Can not find user", e);
         }
@@ -154,7 +158,7 @@ public class DBManager {
             }
             con.commit();
         } catch (SQLException e) {
-            //TODO log
+            logger.error("Can not find user", e);
             rollback(con);
             throw new DBException("Can not find user", e);
         }
@@ -186,7 +190,7 @@ public class DBManager {
             }
             con.commit();
         } catch (SQLException e) {
-            //TODO log
+            logger.error("Can not find user", e);
             rollback(con);
             throw new DBException("Can not find user", e);
         }
@@ -216,7 +220,7 @@ public class DBManager {
             }
             con.commit();
         } catch (SQLException e) {
-            //TODO log
+            logger.error("Can not find requests", e);
             rollback(con);
             throw new DBException("Can not find requests", e);
         }
@@ -246,7 +250,7 @@ public class DBManager {
             }
             con.commit();
         } catch (SQLException e) {
-            //TODO log
+            logger.error("Can not find requests", e);
             rollback(con);
             throw new DBException("Can not find request", e);
         }
@@ -266,7 +270,7 @@ public class DBManager {
             statement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
-            //todo log
+            logger.error("Can not set price", e);
             rollback(con);
             throw new DBException("Can not set price", e);
         }
@@ -284,7 +288,7 @@ public class DBManager {
             statement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
-            //todo log
+            logger.error("Can not set status", e);
             rollback(con);
             throw new DBException("Can not set status", e);
         }
@@ -306,7 +310,7 @@ public class DBManager {
             }
             con.commit();
         } catch (SQLException e) {
-            //todo log
+            logger.error("Can not find account", e);
             rollback(con);
             throw new DBException("Can not find account", e);
         }
@@ -325,7 +329,7 @@ public class DBManager {
             statement.executeUpdate();
             con.commit();
         } catch (SQLException e) {
-            //todo log
+            logger.error("Can not update account", e);
             rollback(con);
             throw new DBException("Can not update account", e);
         }
@@ -352,7 +356,7 @@ public class DBManager {
             }
             con.commit();
         } catch (SQLException e) {
-            //todo log
+            logger.error("Can not find repairman", e);
             rollback(con);
             throw new DBException("Can not find repairman", e);
         }
@@ -371,7 +375,7 @@ public class DBManager {
             statement.execute();
             con.commit();
         } catch (SQLException e) {
-            //todo log
+            logger.error("Can not insert assignment", e);
             rollback(con);
             throw new DBException("Can not insert assignment", e);
         }
@@ -403,42 +407,42 @@ public class DBManager {
             }
             con.commit();
         } catch (SQLException e) {
-            //TODO log
+            logger.error("Can not find user", e);
             rollback(con);
             throw new DBException("Can not find user", e);
         }
         return res;
     }
 
-    public List<RepairRequest> getRequestsByMoreTanOneRepairman(long[] user) throws DBException {
+    public List<RepairRequest> getRequestsFilteredSorted(String sql, long[] repairmanId, String[] statuses, int offset) throws DBException {
         Connection con = null;
         PreparedStatement prstmt = null;
         ResultSet rs = null;
         RepairRequest repairRequest = null;
         List<RepairRequest> res = new ArrayList<>();
-        StringBuilder sql = new StringBuilder();
-        sql.append(SqlConstants.FIND_REQUESTS_BY_REPAIRMAN_MORE_THAN_ONE);
-        if(user.length>1){
-            for (int i = 1;i<user.length;i++){
-                sql.append(SqlConstants.ADD_REPAIRMAN_TO_FILTER);
-            }
 
-        }
-        sql.append(SqlConstants.FIND_BY_MORE_THAN_ONE_END);
         try {
             con = getConnection();
-            prstmt = con.prepareStatement(sql.toString());
-            int k=1;
-            for(int i=0;i<user.length;i++){
-                prstmt.setLong(k++, user[i]);
+            prstmt = con.prepareStatement(sql);
+            int k = 1;
+            if (repairmanId != null) {
+                for (long id : repairmanId) {
+                    prstmt.setLong(k++, id);
+                }
             }
+            if (statuses != null) {
+                for (String st : statuses) {
+                    prstmt.setString(k++, st);
+                }
+            }
+
+            prstmt.setInt(k++, offset);
             rs = prstmt.executeQuery();
             while (rs.next()) {
                 repairRequest = new RepairRequest();
                 repairRequest.setId(rs.getLong("id"));
                 repairRequest.setTitle(rs.getString("title"));
                 repairRequest.setDescription(rs.getString("description"));
-                repairRequest.setUserId(rs.getLong("repairman_id"));
                 repairRequest.setStatus(rs.getString("status"));
                 Timestamp ts = (Timestamp) rs.getObject("time");
                 repairRequest.setTime(ts.toLocalDateTime().truncatedTo(ChronoUnit.MINUTES));
@@ -446,11 +450,122 @@ public class DBManager {
             }
             con.commit();
         } catch (SQLException e) {
-            //TODO log
+            logger.error("Can not find requests", e);
+            rollback(con);
+            throw new DBException("Can not find requests", e);
+        }
+        return res;
+    }
+
+    public int countFilteredRequests(String sql, long[] repairmanId, String[] statuses) throws DBException {
+        Connection con = null;
+        PreparedStatement prstmt = null;
+        ResultSet rs = null;
+        RepairRequest repairRequest = null;
+        List<RepairRequest> res = new ArrayList<>();
+
+        String[] arr = sql.split("\\*");
+        String countSql = arr[0] + "count(*) as count " + arr[1];
+
+        try {
+            con = getConnection();
+            prstmt = con.prepareStatement(countSql);
+            int k = 1;
+            if (repairmanId != null) {
+                for (long id : repairmanId) {
+                    prstmt.setLong(k++, id);
+                }
+            }
+            if (statuses != null) {
+                for (String st : statuses) {
+                    prstmt.setString(k++, st);
+                }
+            }
+
+            rs = prstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
+            con.commit();
+        } catch (SQLException e) {
+            logger.error("Can not count requests", e);
+            rollback(con);
+            throw new DBException("Can not count requests", e);
+        }
+        return -1;
+    }
+
+    public User getRepairmanByRequest(long reqId) throws DBException {
+        Connection con = null;
+        PreparedStatement prstmt = null;
+        ResultSet rs = null;
+        User res = null;
+        try {
+
+            con = getConnection();
+            prstmt = con.prepareStatement(SqlConstants.FIND_REPAIRMAN_BY_REQUEST);
+            int k = 1;
+            prstmt.setLong(k++, reqId);
+            rs = prstmt.executeQuery();
+            if (rs.next()) {
+                res = new User();
+                res.setLogin(rs.getString("login"));
+                res.setId(rs.getLong("id"));
+                res.setRole(rs.getString("role"));
+                res.setPassword(rs.getString("password"));
+            }
+            con.commit();
+        } catch (SQLException e) {
+            logger.error("Can not find user", e);
             rollback(con);
             throw new DBException("Can not find user", e);
         }
         return res;
+    }
+
+    public void insertReview(Review review) throws DBException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        try {
+            con = getConnection();
+            statement = con.prepareStatement(SqlConstants.INSERT_REVIEW);
+            int k = 1;
+            statement.setLong(k++, review.getId());
+            statement.setString(k++, review.getText());
+            statement.setInt(k++, review.getRating());
+            statement.setLong(k++, review.getRepairmanId());
+            statement.executeUpdate();
+            con.commit();
+        } catch (SQLException e) {
+            logger.error("Can not insert review", e);
+            rollback(con);
+            throw new DBException("Can not insert review", e);
+        }
+    }
+
+    public Review getReview(long id) throws DBException {
+        Connection con = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        Review review = null;
+        try {
+            con = getConnection();
+            statement = con.prepareStatement(SqlConstants.GET_REVIEW);
+            statement.setLong(1, id);
+            rs = statement.executeQuery();
+            if (rs.next()) {
+                review = new Review();
+                review.setId(id);
+                review.setText(rs.getString("text"));
+                review.setRating(rs.getInt("rating"));
+                review.setRepairmanId(rs.getLong("repairman_id"));
+            }
+        } catch (SQLException e) {
+            logger.error("Can not find review", e);
+            rollback(con);
+            throw new DBException("Can not find review", e);
+        }
+        return review;
     }
 
     private void rollback(Connection con) {
@@ -459,7 +574,7 @@ public class DBManager {
                 con.rollback();
             }
         } catch (SQLException e) {
-            //TODO log
+            logger.error("Can not rollback connection", e);
         }
     }
 }

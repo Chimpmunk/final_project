@@ -11,9 +11,11 @@
     <title>Title</title>
 </head>
 <body>
+<%@include file="fragment/header2.jsp"%>
+
 <form action="/add-repairman" method="post">
-    <input type="text" name="login">
-    <input type="password" name="password">
+    <input type="text" name="login" pattern="(?=.*[a-z\dA-Z_]).{3,}" required>
+    <input type="password" name="password" pattern="(?=.*[a-z\dA-Z]).{8,}" required>
     <input type="submit" value="add repairman">
 </form>
 </body>
