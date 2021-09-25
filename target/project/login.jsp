@@ -8,10 +8,8 @@
     <fmt:setLocale value="${userLocale}"/>
 </c:if>
 <fmt:setBundle basename="messages"/>
-
 <html>
 <head>
-    <title>Title</title>
     <script src="script/formValidation.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
@@ -20,14 +18,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-<form action="/lang" method="post">
-    <select name="locale">
-        <option value="en">en</option>
-        <option value="ru">ru</option>
-    </select>
-    <fmt:message key="apply.button" var="applyValue"/>
-    <input type="submit" value="${applyValue}">
-</form>
+<%@include file="fragment/header2.jsp"%>
 <div class="container mt-5">
     <form name="myform" action="/login" method="post" onsubmit="validate()">
         <input type="text" value="manager" name="login" id="login" class="form-control mt-2" >
@@ -40,7 +31,5 @@
         <input type="submit" name="submit" value="${submitValue}" class="btn btn-success mt-2">
     </form>
 </div>
-
-
 </body>
 </html>

@@ -35,10 +35,11 @@ public class Login extends HttpServlet {
             User user = manager.getUserByLogin(request.getParameter("login"));
             if (user == null || !user.getPassword().equals(request.getParameter("password"))) {
                 session.setAttribute("userNotFound", "userNotFound");
-                response.sendRedirect("/login");
+                response.sendRedirect("/");
             } else if (user.getPassword().equals(request.getParameter("password"))) {
                 session.setAttribute("user", user);
                 logger.info("User " + user.getLogin() + " entered");
+                session.setAttribute("userNotFound", null);
                 response.sendRedirect("/profile");
             }
         } catch (DBException e) {

@@ -23,7 +23,7 @@ public class LoginFilter implements Filter {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             HttpServletResponse resp = (HttpServletResponse) servletResponse;
-            resp.sendRedirect("/");
+            resp.sendRedirect("/profile");
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }

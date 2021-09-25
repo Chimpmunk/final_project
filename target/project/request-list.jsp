@@ -32,8 +32,8 @@
 <c:set var="params" value="${requestScope['javax.servlet.forward.query_string']}"/>
 <c:set var="requestPath" value="${requestScope['javax.servlet.forward.request_uri']}"/>
 <c:set var="pageUrl" value="${ baseURL }${ requestPath }${ not empty params?'?'+=params:'' }"/>
-<div class="d-flex row">
-    <div class="col-2 m-2 alert alert-info">
+<div class="d-flex row m-2">
+    <div class="col-2 alert alert-info" style="height: 100%">
         <form action="/request-list" class="ml-2">
             <c:if test="${user.role == 'manager'}">
                 <div>
@@ -50,15 +50,17 @@
             </c:if>
             <div>
                 <p><fmt:message key="choose.status"/></p>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="status" id="accept"
-                           value="waiting_for_acceptance">
-                    <label for="accept">waiting_for_acceptance</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="status" id="wpay" value="waiting_for_payment">
-                    <label for="wpay">waiting_for_payment</label>
-                </div>
+                <c:if test="${user.role!='repairman'}">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="status" id="accept"
+                               value="waiting_for_acceptance">
+                        <label for="accept">waiting_for_acceptance</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="status" id="wpay" value="waiting_for_payment">
+                        <label for="wpay">waiting_for_payment</label>
+                    </div>
+                </c:if>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" name="status" id="assign" value="assigned">
                     <label for="assign">assigned</label>
@@ -90,15 +92,17 @@
             <input type="submit" class="btn btn-info">
         </form>
     </div>
-    <div>
+    <div class="ml-2 col-lg">
         <c:forEach items="${requests}" var="req">
-            <my:requestTag title="${req.title}" description="${req.description}" status="${req.status}"
-                           date="${req.time}" link="/request-list/display?request_id=${req.id}"/>
-            <h4></h4>
-            <h4></h4>
-            <h4></h4>
-            <p></p>
-            <a href="">open</a>
+            <c:if test="${userLocale==null}">
+                <my:requestTag title="${req.title}" description="${req.description}" status="${req.status}"
+                               date="${req.time}" locale="${defaultLocale}" link="/request-list/display?request_id=${req.id}"/>
+            </c:if>
+            <c:if test="${userLocale!=null}">
+                <my:requestTag title="${req.title}" description="${req.description}" status="${req.status}"
+                               date="${req.time}" locale="${userLocale}" link="/request-list/display?request_id=${req.id}"/>
+            </c:if>
+
         </c:forEach>
     </div>
 </div>

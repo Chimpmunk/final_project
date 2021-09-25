@@ -26,7 +26,7 @@ public class RegistrationController extends HttpServlet {
             //TODO log
             //TODO redirect to registration page
         }
-        response.sendRedirect("/profile");
+        response.sendRedirect("/");
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response){

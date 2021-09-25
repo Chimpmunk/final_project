@@ -23,8 +23,8 @@
 
 <div class="container mt-5">
     <form action="/registration" method="post">
-        <input type="text" name="login" pattern="(?=.*[a-z\dA-Z_]).{3,}" required class="form-control mt-2">
-        <input type="password" name="password" pattern="(?=.*[a-z\dA-Z]).{8,}" required class="form-control mt-2">
+        <input type="text" maxlength="45" name="login" pattern="(?=.*[a-z\dA-Z_]).{3,}" required class="form-control mt-2">
+        <input type="password" maxlength="45" name="password" pattern="(?=.*[a-z\dA-Z]).{8,}" required class="form-control mt-2">
         <fmt:message key="register.button" var="submitValue"/>
         <input type="submit" name="submit" value="${submitValue}" class="btn btn-success mt-2">
     </form>

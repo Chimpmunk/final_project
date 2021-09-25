@@ -51,6 +51,7 @@ public class SqlConstants {
     public static final String FIND_REQUESTS_SORTED_AND_FILTERED = "select distinct *";
     public static final String FROM_RR = "  from repair_request as rr";
     public static final String FROM_RA = ",  request_assignment as ra ";
+    public static final String FROM_UR = ", user_request as ur ";
     public static final String WHERE = " where (";
     public static final String REPAIRMAN = " ra.repairman_id = ? ";
     public static final String ADD_REPAIRMAN = " or ra.repairman_id = ?";
@@ -59,6 +60,8 @@ public class SqlConstants {
     public static final String STATUS = " rr.status like ?";
     public static final String ADD_STATUS = " or rr.status like ?";
     public static final String IF_REPAIRMAN = " and ra.request_id = rr.id ";
+    public static final String IF_USER = " and ur.request_id = rr.id";
+    public static final String USER = "  ur.user_id = ?";
     public static final String ORDER = " order by %s asc ";
     public static final String LIMIT = " limit 20 offset ?";
 

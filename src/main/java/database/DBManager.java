@@ -414,7 +414,7 @@ public class DBManager {
         return res;
     }
 
-    public List<RepairRequest> getRequestsFilteredSorted(String sql, long[] repairmanId, String[] statuses, int offset) throws DBException {
+    public List<RepairRequest> getRequestsFilteredSorted(String sql, long[] repairmanId, String[] statuses, int offset, User user) throws DBException {
         Connection con = null;
         PreparedStatement prstmt = null;
         ResultSet rs = null;
@@ -435,7 +435,9 @@ public class DBManager {
                     prstmt.setString(k++, st);
                 }
             }
-
+            if (!user.getRole().equals("manager")){
+                prstmt.setLong(k++,user.getId());
+            }
             prstmt.setInt(k++, offset);
             rs = prstmt.executeQuery();
             while (rs.next()) {
@@ -457,7 +459,7 @@ public class DBManager {
         return res;
     }
 
-    public int countFilteredRequests(String sql, long[] repairmanId, String[] statuses) throws DBException {
+    public int countFilteredRequests(String sql, long[] repairmanId, String[] statuses, User user) throws DBException {
         Connection con = null;
         PreparedStatement prstmt = null;
         ResultSet rs = null;
@@ -481,7 +483,9 @@ public class DBManager {
                     prstmt.setString(k++, st);
                 }
             }
-
+            if (!user.getRole().equals("manager")){
+                prstmt.setLong(k++,user.getId());
+            }
             rs = prstmt.executeQuery();
             if (rs.next()) {
                 return rs.getInt("count");
@@ -492,7 +496,7 @@ public class DBManager {
             rollback(con);
             throw new DBException("Can not count requests", e);
         }
-        return -1;
+        return 0;
     }
 
     public User getRepairmanByRequest(long reqId) throws DBException {
