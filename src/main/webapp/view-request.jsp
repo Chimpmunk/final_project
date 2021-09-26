@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="my" uri="http://com.my/lib" %>
 <c:if test="${userLocale==null}">
     <fmt:setLocale value="${defaultLocale}"/>
 </c:if>
@@ -22,31 +23,37 @@
 <body>
 <%@include file="fragment/header2.jsp"%>
 
-<h2>${requestAuthor.login}</h2>
-<h4>${req.time}</h4>
-<h4>${req.title}</h4>
-<h4>${req.status}</h4>
-<p>${req.description}</p>
-<c:if test="${req.price!=0}">
-    <h4>${req.price}</h4>
+<c:if test="${userLocale==null}">
+    <my:requestPage title="${req.title}" description="${req.description}" time="${req.time}"
+                    status="${req.status}" author="${requestAuthor.login}" locale="${defaultLocale}" price="${req.price}" repairman="${repairman.login}"/>
 </c:if>
-<c:if test="${repairman!=null}">
-    <h4>${repairman.login}</h4>
+<c:if test="${userLocale!=null}">
+    <my:requestPage title="${req.title}" description="${req.description}" time="${req.time}"
+                    status="${req.status}" author="${requestAuthor.login}" locale="${userLocale}" price="${req.price}" repairman="${repairman.login}"/>
 </c:if>
+
+
+
 <c:if test="${req.status=='waiting_for_acceptance' && user.role=='manager'}">
-    <form action="/set-price?request_id=${req.id}" method="post">
-        <input type="number" class="form-control" name="price" required>
-        <fmt:message key="set.price.button" var="setPrice"/>
-        <input type="submit" class="btn btn-success" value="${setPrice}">
-    </form>
+    <div class="container mt-5">
+        <form action="/set-price?request_id=${req.id}" method="post">
+            <input type="number" class="form-control" name="price" required>
+            <fmt:message key="set.price.button" var="setPrice"/>
+            <input type="submit" class="btn btn-success" value="${setPrice}">
+        </form>
+    </div>
+
 </c:if>
 
 <c:if test="${req.status=='waiting_for_payment' && user.role=='manager'}">
-    <form action="/refill?user_id=${requestAuthor.id}&request_id=${req.id}" method="post">
-        <input type="number" class="form-control" name="value" required>
-        <fmt:message key="refill.button" var="refill"/>
-        <input type="submit" class="btn btn-success" value="${refill}">
-    </form>
+    <div class="container mt-5">
+        <form action="/refill?user_id=${requestAuthor.id}&request_id=${req.id}" method="post">
+            <input type="number" class="form-control" name="value" required>
+            <fmt:message key="refill.button" var="refill"/>
+            <input type="submit" class="btn btn-success" value="${refill}">
+        </form>
+    </div>
+
     <form action="/pay?user_id=${requestAuthor.id}&request_id=${req.id}" method="post">
         <fmt:message key="pay.button" var="pay"/>
         <input type="submit" class="btn btn-success" value="${pay}">
@@ -54,61 +61,74 @@
 </c:if>
 
 <c:if test="${req.status=='paid' && user.role=='manager'}">
-    <form action="/assign?request_id=${req.id}" method="post">
-        <select name="repairman" class="form-control">
-            <c:forEach items="${repairmanList}" var="r">
-                <option value="${r.id}">${r.login}</option>
-            </c:forEach>
-        </select>
-        <fmt:message key="assign.button" var="assign"/>
-        <input type="submit" class="btn btn-success" value="${assign}">
-    </form>
+    <div class="container mt-5">
+        <form action="/assign?request_id=${req.id}" method="post">
+            <select name="repairman" class="form-control">
+                <c:forEach items="${repairmanList}" var="r">
+                    <option value="${r.id}">${r.login}</option>
+                </c:forEach>
+            </select>
+            <fmt:message key="assign.button" var="assign"/>
+            <input type="submit" class="btn btn-success" value="${assign}">
+        </form>
+    </div>
+
 </c:if>
 
 <c:if test="${req.status=='assigned' && user.role=='repairman'}">
-    <form action="/in-progress?request_id=${req.id}" method="post">
-        <fmt:message key="work.button" var="work"/>
-        <input type="submit" class="btn btn-success" value="${work}">
-    </form>
+    <div class="container mt-5">
+        <form action="/in-progress?request_id=${req.id}" method="post">
+            <fmt:message key="work.button" var="work"/>
+            <input type="submit" class="btn btn-success" value="${work}">
+        </form>
+    </div>
+
 </c:if>
 
 <c:if test="${req.status=='in_progress' && user.role=='repairman'}">
-    <form action="/done?request_id=${req.id}" method="post">
-        <fmt:message key="done.button" var="done"/>
-        <input type="submit" class="btn btn-success" value="${done}">
-    </form>
+    <div class="container mt-5">
+        <form action="/done?request_id=${req.id}" method="post">
+            <fmt:message key="done.button" var="done"/>
+            <input type="submit" class="btn btn-success" value="${done}">
+        </form>
+    </div>
+
 </c:if>
 
 <c:if test="${req.status=='done' && user.role=='customer' && review==null}">
-    <form  action="/rate?request_id=${req.id}&repairman=${repairman.id}" class="mt-5" method="post">
-        <fmt:message key="rating" var="ratingLabel"/>
-        <div class="rating-area">
-            <input type="radio" id="5" name="rating" value="5">
-            <label for="5" title="${ratingLabel} «5»"></label>
+    <div class="container mt-5">
+        <form  action="/rate?request_id=${req.id}&repairman=${repairman.id}" class="mt-5" method="post">
+            <fmt:message key="rating" var="ratingLabel"/>
+            <div class="rating-area">
+                <input type="radio" id="5" name="rating" value="5">
+                <label for="5" title="${ratingLabel} «5»"></label>
 
-            <input type="radio" id="4" name="rating" value="4">
-            <label for="4" title="${ratingLabel} «4»"></label>
+                <input type="radio" id="4" name="rating" value="4">
+                <label for="4" title="${ratingLabel} «4»"></label>
 
-            <input type="radio" id="3" name="rating" value="3">
-            <label for="3" title="${ratingLabel} «3»"></label>
+                <input type="radio" id="3" name="rating" value="3">
+                <label for="3" title="${ratingLabel} «3»"></label>
 
-            <input type="radio" id="2" name="rating" value="2">
-            <label for="2" title="${ratingLabel} «2»"></label>
+                <input type="radio" id="2" name="rating" value="2">
+                <label for="2" title="${ratingLabel} «2»"></label>
 
-            <input type="radio" id="1" name="rating" value="1">
-            <label for="1" title="${ratingLabel} «1»"></label>
-        </div>
-        <fmt:message key="enter.comment" var="comment"/>
-        <textarea name="comment" placeholder="${comment}" class="form-control"></textarea>
-        <fmt:message key="review" var="leaveReview"/>
-        <input type="submit" class="btn btn-success" value="${leaveReview}">
-    </form>
+                <input type="radio" id="1" name="rating" value="1">
+                <label for="1" title="${ratingLabel} «1»"></label>
+            </div>
+            <fmt:message key="enter.comment" var="comment"/>
+            <textarea name="comment" placeholder="${comment}" class="form-control"></textarea>
+            <fmt:message key="review" var="leaveReview"/>
+            <input type="submit" class="btn btn-success" value="${leaveReview}">
+        </form>
+    </div>
 </c:if>
 
 <c:if test="${review!=null}">
-    <h3>Review</h3>
-    <h4>${review.rating}!</h4>
-    <p>${review.text}</p>
+    <div class="m-2">
+        <h3><fmt:message key="review.label"/></h3>
+        <h4>${review.rating}</h4>
+        <p>${review.text}</p>
+    </div>
 </c:if>
 </body>
 </html>

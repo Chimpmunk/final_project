@@ -165,68 +165,6 @@ public class DBManager {
         return res;
     }
 
-    public List<RepairRequest> getRequestsByUser(User user) throws DBException {
-        Connection con = null;
-        PreparedStatement prstmt = null;
-        ResultSet rs = null;
-        RepairRequest repairRequest = null;
-        List<RepairRequest> res = new ArrayList<>();
-        try {
-            con = getConnection();
-            prstmt = con.prepareStatement(SqlConstants.FIND_REQUESTS_BY_USER);
-            int k = 1;
-            prstmt.setLong(k++, user.getId());
-            rs = prstmt.executeQuery();
-            while (rs.next()) {
-                repairRequest = new RepairRequest();
-                repairRequest.setId(rs.getLong("id"));
-                repairRequest.setTitle(rs.getString("title"));
-                repairRequest.setDescription(rs.getString("description"));
-                repairRequest.setUserId(rs.getLong("user_id"));
-                repairRequest.setStatus(rs.getString("status"));
-                Timestamp ts = (Timestamp) rs.getObject("time");
-                repairRequest.setTime(ts.toLocalDateTime().truncatedTo(ChronoUnit.MINUTES));
-                res.add(repairRequest);
-            }
-            con.commit();
-        } catch (SQLException e) {
-            logger.error("Can not find user", e);
-            rollback(con);
-            throw new DBException("Can not find user", e);
-        }
-        return res;
-    }
-
-    public List<RepairRequest> findAllRequests() throws DBException {
-        Connection con = null;
-        Statement statement = null;
-        ResultSet rs = null;
-        RepairRequest repairRequest = null;
-        List<RepairRequest> res = new ArrayList<>();
-        try {
-            con = getConnection();
-            statement = con.createStatement();
-            rs = statement.executeQuery(SqlConstants.FIND_ALL_REQUESTS);
-            while (rs.next()) {
-                repairRequest = new RepairRequest();
-                repairRequest.setId(rs.getLong("id"));
-                repairRequest.setTitle(rs.getString("title"));
-                repairRequest.setDescription(rs.getString("description"));
-                repairRequest.setUserId(rs.getLong("user_id"));
-                repairRequest.setStatus(rs.getString("status"));
-                Timestamp ts = (Timestamp) rs.getObject("time");
-                repairRequest.setTime(ts.toLocalDateTime().truncatedTo(ChronoUnit.MINUTES));
-                res.add(repairRequest);
-            }
-            con.commit();
-        } catch (SQLException e) {
-            logger.error("Can not find requests", e);
-            rollback(con);
-            throw new DBException("Can not find requests", e);
-        }
-        return res;
-    }
-
     public RepairRequest getRequestById(Long id) throws DBException {
         Connection con = null;
         PreparedStatement statement = null;
@@ -382,38 +320,6 @@ public class DBManager {
     }
 
 
-    public List<RepairRequest> getRequestsByRepairman(User user) throws DBException {
-        Connection con = null;
-        PreparedStatement prstmt = null;
-        ResultSet rs = null;
-        RepairRequest repairRequest = null;
-        List<RepairRequest> res = new ArrayList<>();
-        try {
-            con = getConnection();
-            prstmt = con.prepareStatement(SqlConstants.FIND_REQUESTS_BY_REPAIRMAN);
-            int k = 1;
-            prstmt.setLong(k++, user.getId());
-            rs = prstmt.executeQuery();
-            while (rs.next()) {
-                repairRequest = new RepairRequest();
-                repairRequest.setId(rs.getLong("id"));
-                repairRequest.setTitle(rs.getString("title"));
-                repairRequest.setDescription(rs.getString("description"));
-                repairRequest.setUserId(rs.getLong("repairman_id"));
-                repairRequest.setStatus(rs.getString("status"));
-                Timestamp ts = (Timestamp) rs.getObject("time");
-                repairRequest.setTime(ts.toLocalDateTime().truncatedTo(ChronoUnit.MINUTES));
-                res.add(repairRequest);
-            }
-            con.commit();
-        } catch (SQLException e) {
-            logger.error("Can not find user", e);
-            rollback(con);
-            throw new DBException("Can not find user", e);
-        }
-        return res;
-    }
-
     public List<RepairRequest> getRequestsFilteredSorted(String sql, long[] repairmanId, String[] statuses, int offset, User user) throws DBException {
         Connection con = null;
         PreparedStatement prstmt = null;
@@ -447,6 +353,7 @@ public class DBManager {
                 repairRequest.setDescription(rs.getString("description"));
                 repairRequest.setStatus(rs.getString("status"));
                 Timestamp ts = (Timestamp) rs.getObject("time");
+                repairRequest.setPrice(rs.getDouble("price"));
                 repairRequest.setTime(ts.toLocalDateTime().truncatedTo(ChronoUnit.MINUTES));
                 res.add(repairRequest);
             }

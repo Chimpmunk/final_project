@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="my" uri="WEB-INF/tag/custom.tld" %>
+<%@ taglib prefix="my" uri="http://com.my/lib" %>
 <c:if test="${userLocale==null}">
     <fmt:setLocale value="${defaultLocale}"/>
 </c:if>
@@ -96,11 +96,11 @@
         <c:forEach items="${requests}" var="req">
             <c:if test="${userLocale==null}">
                 <my:requestTag title="${req.title}" description="${req.description}" status="${req.status}"
-                               date="${req.time}" locale="${defaultLocale}" link="/request-list/display?request_id=${req.id}"/>
+                               date="${req.time}" locale="${defaultLocale}" price="${req.price}" link="/request-list/display?request_id=${req.id}"/>
             </c:if>
             <c:if test="${userLocale!=null}">
                 <my:requestTag title="${req.title}" description="${req.description}" status="${req.status}"
-                               date="${req.time}" locale="${userLocale}" link="/request-list/display?request_id=${req.id}"/>
+                               date="${req.time}" locale="${userLocale}" price="${req.price}" link="/request-list/display?request_id=${req.id}"/>
             </c:if>
 
         </c:forEach>

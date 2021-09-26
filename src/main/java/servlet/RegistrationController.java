@@ -20,13 +20,20 @@ public class RegistrationController extends HttpServlet {
         user.setLogin(request.getParameter("login"));
         user.setPassword(request.getParameter("password")); //TODO hash password
         user.setRole("customer");
+        String redirect = "/";
         try {
-            manager.insertUser(user);
+            User oldUser = manager.getUserByLogin(user.getLogin());
+            if(oldUser==null){
+                manager.insertUser(user);
+            } else {
+                redirect = "/login";
+            }
+
         } catch (DBException e){
             //TODO log
             //TODO redirect to registration page
         }
-        response.sendRedirect("/");
+        response.sendRedirect(redirect);
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response){

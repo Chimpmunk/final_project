@@ -21,10 +21,15 @@ public class Payment extends HttpServlet {
         try{
             double acc = DBManager.getInstance().getAccountByUser(uId);
             RepairRequest repairRequest = DBManager.getInstance().getRequestById(reqId);
-            acc-=repairRequest.getPrice();
-            DBManager.getInstance().updateAccount(uId,acc);
-            DBManager.getInstance().setStatus(reqId, "paid");
-            resp.sendRedirect("/request-list/display?request_id=" + reqId);
+            if(acc<repairRequest.getPrice()){
+                resp.sendRedirect("/request-list/display?request_id=" + reqId);
+            } else{
+                acc-=repairRequest.getPrice();
+                DBManager.getInstance().updateAccount(uId,acc);
+                DBManager.getInstance().setStatus(reqId, "paid");
+                resp.sendRedirect("/request-list/display?request_id=" + reqId);
+            }
+
         } catch (DBException e){
             //todo log and redirect
         }

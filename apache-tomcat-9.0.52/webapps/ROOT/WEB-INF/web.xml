@@ -36,7 +36,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>profileFilter</filter-name>
-        <url-pattern>/request-list</url-pattern>
+        <url-pattern>/request-list/*</url-pattern>
     </filter-mapping>
 
     <filter>

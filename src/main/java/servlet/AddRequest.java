@@ -4,7 +4,6 @@ package servlet;
 import database.DBManager;
 import database.exception.DBException;
 import entity.RepairRequest;
-import entity.Status;
 import entity.User;
 
 import javax.servlet.ServletException;
@@ -39,7 +38,7 @@ public class AddRequest extends HttpServlet {
         request.setDescription(req.getParameter("description"));
         request.setUserId(user.getId());
         request.setTime(LocalDateTime.now());
-        request.setStatus(Status.waiting_for_acceptance.toString());
+        request.setStatus("waiting_for_acceptance");
 
 
         try{

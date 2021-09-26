@@ -1,7 +1,5 @@
 package tag;
 
-import com.oracle.wls.shaded.org.apache.bcel.generic.LDIV;
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
@@ -11,13 +9,22 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RequestTag extends SimpleTagSupport {
+public class RequestCardTag extends SimpleTagSupport {
     private String title;
     private String description;
     private String date;
     private String status;
     private String link;
     private String locale;
+    private String price;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
     public String getTitle() {
         return title;
@@ -82,9 +89,13 @@ public class RequestTag extends SimpleTagSupport {
         out.println("<p class=\"card-text\">"+matcher.group(4)+" "+matcher.group(3)+"."+matcher.group(2)+"."+matcher.group(1)+"<p/>");
         out.println("</div>");
         out.println("<div class=\"row mr-3 ml-3\"");
-        out.println("<p class=\"card-text\">"+bundle.getString("status")+" :"+bundle.getString(status)+"<p/>");
+        out.println("<p class=\"card-text\">"+bundle.getString("status")+": "+bundle.getString(status)+"<p/>");
+        out.println("</div>");
+        out.println("<div class=\"row mr-3 ml-3\"");
+        out.println("<p class=\"card-text\">"+price+" "+bundle.getString("uah")+"<p/>");
+        out.println("</div>");
+        out.println("<div class=\"row mr-3 ml-3\"");
         out.println("<p class=\"card-text\">"+description+"<p/>");
-
         out.println("</div>");
         out.println("<a href=\""+link+"\" class=\"btn ml-3 btn-primary\">"+"details"+"</a>");
         out.println("</div>");
